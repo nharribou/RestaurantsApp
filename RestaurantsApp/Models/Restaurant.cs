@@ -7,7 +7,7 @@
     public class Restaurant
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)] 
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         [Required]
@@ -22,7 +22,8 @@
         [MaxLength(255)] // Specify the maximum length for VARCHAR
         public string City { get; set; }
 
-        public List<Category> Categories { get; set; } = new List<Category>();
-    } 
+        [ForeignKey("CategoryId")] // Define the foreign key property name
+        public int CategoryId { get; set; }
 
+    }
 }
