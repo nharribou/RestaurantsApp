@@ -8,5 +8,7 @@ namespace RestaurantsApp.Models.Context
 
         public DbSet<Restaurant> Restaurants { get; set; }
         public DbSet<Category> Categories { get; set; }
+
+        public DbSet<UserModel> Users { get; set; }
     }
 }
