@@ -109,51 +109,70 @@ namespace RestaurantsApp.Controllers
         }
 
 
-        // PUT: api/Restaurants/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutRestaurant(int id, Restaurant restaurant)
+        public async Task<IActionResult> PutRestaurant(int id, [FromBody] RestaurantCreateDTO restaurantDTO)
         {
-            if (id != restaurant.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(restaurant).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!RestaurantExists(id))
+                var existingRestaurant = await _context.Restaurants.FindAsync(id);
+                if (existingRestaurant == null)
                 {
-                    return NotFound();
+                    return NotFound($"Restaurant with id {id} not found.");
                 }
-                else
-                {
-                    throw;
-                }
-            }
 
-            return NoContent();
+                // Update the existing restaurant properties with the DTO data
+                existingRestaurant.Name = restaurantDTO.Name;
+                existingRestaurant.Address = restaurantDTO.Address;
+                existingRestaurant.City = restaurantDTO.City;
+                existingRestaurant.CategoryId = restaurantDTO.CategoryId;
+                existingRestaurant.Rating = restaurantDTO.Rating;
+
+                await _context.SaveChangesAsync();
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                // Log the exception for debugging purposes
+                Console.WriteLine(ex);
+                return StatusCode(500, "An error occurred while updating the restaurant.");
+            }
         }
 
-        // POST: api/Restaurants
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+
+
         [HttpPost]
-        public async Task<ActionResult<Restaurant>> PostRestaurant(Restaurant restaurant)
+        public async Task<ActionResult<Restaurant>> PostRestaurant([FromBody] RestaurantCreateDTO restaurantDTO)
         {
-          if (_context.Restaurants == null)
-          {
-              return Problem("Entity set 'RestaurantDbContext.Restaurants'  is null.");
-          }
+            if (_context.Restaurants == null)
+            {
+                return Problem("Entity set 'RestaurantDbContext.Restaurants' is null.");
+            }
+
+            // Check if the specified categoryId exists
+            var existingCategory = await _context.Categories.FindAsync(restaurantDTO.CategoryId);
+            if (existingCategory == null)
+            {
+                return BadRequest("Invalid categoryId. Category not found.");
+            }
+
+            // Map the DTO to your entity model
+            var restaurant = new Restaurant
+            {
+                Name = restaurantDTO.Name,
+                Address = restaurantDTO.Address,
+                City = restaurantDTO.City,
+                CategoryId = restaurantDTO.CategoryId,
+                Rating = restaurantDTO.Rating
+            };
+
             _context.Restaurants.Add(restaurant);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetRestaurant", new { id = restaurant.Id }, restaurant);
         }
+
+
 
         // DELETE: api/Restaurants/5
         [HttpDelete("{id}")]
