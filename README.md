@@ -151,9 +151,14 @@ Follow these steps to get started with the Restaurants API:
 - Entity Framework Core
 - Swagger for API documentation
 
+## Author
+
+HARRIBOU Najib : https://github.com/nharribou
+AGUDO ANTONIO Francisco : https://github.com/francisco-aa
+
+
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
 
 
-run migrations : dotnet ef database update
