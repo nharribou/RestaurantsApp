@@ -34,7 +34,24 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+    {
+        Version = "v1",
+        Title = "Restaurants API",
+        Description = "<b>The Restaurants API is designed to manage and explore restaurant data.<br>" +
+              "It provides a range of features for retrieving, updating, and searching restaurant information,<br>" +
+              "making it easy to integrate restaurant-related data into your applications.</b>",
+
+        Contact = new Microsoft.OpenApi.Models.OpenApiContact
+        {
+            Name = "Najib HARRIBOU / Francisco AGUDO ANTONIO",
+            Email = "email@email.com",
+            Url = new Uri("https://google.com")
+        }
+    });
+});
 
 // Load configuration from appsettings.json
 var configuration = new ConfigurationBuilder()
