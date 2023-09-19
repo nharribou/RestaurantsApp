@@ -25,22 +25,32 @@ namespace RestaurantsApp.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Restaurant>>> GetRestaurants()
         {
-          if (_context.Restaurants == null)
-          {
-              return NotFound();
-          }
-            return await _context.Restaurants.ToListAsync();
+            if (_context.Restaurants == null)
+            {
+                return NotFound();
+            }
+
+    
+            var restaurants = await _context.Restaurants
+                .Include(r => r.Category)
+                .ToListAsync();
+
+            return restaurants;
         }
 
         // GET: api/Restaurants/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Restaurant>> GetRestaurant(int id)
         {
-          if (_context.Restaurants == null)
-          {
-              return NotFound();
-          }
-            var restaurant = await _context.Restaurants.FindAsync(id);
+            if (_context.Restaurants == null)
+            {
+                return NotFound();
+            }
+
+       
+            var restaurant = await _context.Restaurants
+                .Include(r => r.Category)
+                .FirstOrDefaultAsync(r => r.Id == id);
 
             if (restaurant == null)
             {
@@ -49,6 +59,55 @@ namespace RestaurantsApp.Controllers
 
             return restaurant;
         }
+
+        [HttpGet("SearchByName")]
+        public async Task<ActionResult<IEnumerable<Restaurant>>> SearchByName(string name)
+        {
+            if (_context.Restaurants == null)
+            {
+                return NotFound();
+            }
+
+            var restaurants = await _context.Restaurants
+                .Include(r => r.Category)
+                .Where(r => r.Name.Contains(name))
+                .ToListAsync();
+
+            return restaurants;
+        }
+
+        [HttpGet("TopRated")]
+        public async Task<ActionResult<IEnumerable<Restaurant>>> GetTopRatedRestaurants()
+        {
+            if (_context.Restaurants == null)
+            {
+                return NotFound();
+            }
+
+            var topRatedRestaurants = await _context.Restaurants
+                .Include(r => r.Category) 
+                .OrderByDescending(r => r.Rating)
+                .ToListAsync();
+
+            return topRatedRestaurants;
+        }
+
+        [HttpGet("ByCategory/{categoryId}")]
+        public async Task<ActionResult<IEnumerable<Restaurant>>> GetRestaurantsByCategory(int categoryId)
+        {
+            if (_context.Restaurants == null)
+            {
+                return NotFound();
+            }
+
+            var restaurantsByCategory = await _context.Restaurants
+                .Where(r => r.CategoryId == categoryId)
+                .Include(r => r.Category) 
+                .ToListAsync();
+
+            return restaurantsByCategory;
+        }
+
 
         // PUT: api/Restaurants/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754

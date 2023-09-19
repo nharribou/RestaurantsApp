@@ -10,5 +10,15 @@ namespace RestaurantsApp.Models.Context
         public DbSet<Category> Categories { get; set; }
 
         public DbSet<UserModel> Users { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Restaurant>()
+                .HasOne(r => r.Category)
+                .WithMany()
+                .HasForeignKey(r => r.CategoryId);
+
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }
