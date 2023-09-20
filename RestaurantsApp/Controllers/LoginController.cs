@@ -35,11 +35,14 @@ namespace RestaurantsApp.Controllers
             if (user != null)
             {
                 var token = Generate(user);
-                return Ok(token);
+
+                // Return the token in JSON format
+                return Ok(new { Token = token });
             }
 
             return NotFound("User not found");
         }
+
 
         private string Generate(UserModel user)
         {
