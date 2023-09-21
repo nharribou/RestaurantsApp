@@ -21,7 +21,18 @@ namespace RestaurantsApp.Controllers
             _context = context;
         }
 
-        // GET: api/Restaurants
+
+        /// <summary>
+        /// Récupère une liste de restaurants.
+        /// </summary>
+        /// <remarks>
+        /// Cette méthode permet de récupérer la liste complète de restaurants disponibles.
+        /// </remarks>
+        /// <returns>Une liste de restaurants.</returns>
+        /// <response code="200">La liste de restaurants a été récupérée avec succès.</response>
+        /// <response code="401">Vous n'êtes pas autorisé à consulter la ressource.</response>
+        /// <response code="403">La ressource que vous avez tenté d'atteindre n'a pas été trouvée.</response>
+        /// <response code="500">Échec de traitement de la requête par l'application.</response>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Restaurant>>> GetRestaurants()
         {
@@ -38,7 +49,14 @@ namespace RestaurantsApp.Controllers
             return restaurants;
         }
 
-        // GET: api/Restaurants/5
+        /// <summary>
+        /// Récupère un restaurant par son ID.
+        /// </summary>
+        /// <param name="id">ID du restaurant à récupérer.</param>
+        /// <returns>Le restaurant correspondant à l'ID spécifié.</returns>
+        /// <response code="200">Le restaurant a été récupéré avec succès.</response>
+        /// <response code="401">Vous n'êtes pas autorisé à consulter la ressource.</response>
+        /// <response code="403">La ressource que vous avez tenté d'atteindre n'a pas été trouvée.</response>
         [HttpGet("{id}")]
         public async Task<ActionResult<Restaurant>> GetRestaurant(int id)
         {
@@ -60,6 +78,14 @@ namespace RestaurantsApp.Controllers
             return restaurant;
         }
 
+        /// <summary>
+        /// Recherche des restaurants par nom.
+        /// </summary>
+        /// <param name="name">Nom du restaurant à rechercher.</param>
+        /// <returns>Une liste de restaurants correspondant au nom spécifié.</returns>
+        /// <response code="200">La liste de restaurants a été récupérée avec succès.</response>
+        /// <response code="401">Vous n'êtes pas autorisé à consulter la ressource.</response>
+        /// <response code="403">La ressource que vous avez tenté d'atteindre n'a pas été trouvée.</response>
         [HttpGet("SearchByName")]
         public async Task<ActionResult<IEnumerable<Restaurant>>> SearchByName(string name)
         {
@@ -76,6 +102,13 @@ namespace RestaurantsApp.Controllers
             return restaurants;
         }
 
+        /// <summary>
+        /// Récupère les restaurants les mieux notés.
+        /// </summary>
+        /// <returns>Une liste de restaurants triés par note décroissante.</returns>
+        /// <response code="200">La liste de restaurants a été récupérée avec succès.</response>
+        /// <response code="401">Vous n'êtes pas autorisé à consulter la ressource.</response>
+        /// <response code="403">La ressource que vous avez tenté d'atteindre n'a pas été trouvée.</response>
         [HttpGet("TopRated")]
         public async Task<ActionResult<IEnumerable<Restaurant>>> GetTopRatedRestaurants()
         {
@@ -92,6 +125,14 @@ namespace RestaurantsApp.Controllers
             return topRatedRestaurants;
         }
 
+        /// <summary>
+        /// Récupère les restaurants par catégorie.
+        /// </summary>
+        /// <param name="categoryId">ID de la catégorie des restaurants à récupérer.</param>
+        /// <returns>Une liste de restaurants appartenant à la catégorie spécifiée.</returns>
+        /// <response code="200">La liste de restaurants a été récupérée avec succès.</response>
+        /// <response code="401">Vous n'êtes pas autorisé à consulter la ressource.</response>
+        /// <response code="403">La ressource que vous avez tenté d'atteindre n'a pas été trouvée.</response>
         [HttpGet("ByCategory/{categoryId}")]
         public async Task<ActionResult<IEnumerable<Restaurant>>> GetRestaurantsByCategory(int categoryId)
         {
@@ -108,7 +149,16 @@ namespace RestaurantsApp.Controllers
             return restaurantsByCategory;
         }
 
-
+        /// <summary>
+        /// Met à jour un restaurant par son ID.
+        /// </summary>
+        /// <param name="id">ID du restaurant à mettre à jour.</param>
+        /// <param name="restaurantDTO">Données du restaurant à mettre à jour.</param>
+        /// <returns>Aucun contenu en cas de succès.</returns>
+        /// <response code="204">Le restaurant a été mis à jour avec succès.</response>
+        /// <response code="401">Vous n'êtes pas autorisé à consulter la ressource.</response>
+        /// <response code="404">Le restaurant avec l'ID spécifié n'a pas été trouvé.</response>
+        /// <response code="500">Échec de traitement de la requête par l'application.</response>
         [HttpPut("{id}")]
         public async Task<IActionResult> PutRestaurant(int id, [FromBody] RestaurantCreateDTO restaurantDTO)
         {
@@ -140,7 +190,15 @@ namespace RestaurantsApp.Controllers
         }
 
 
-
+        /// <summary>
+        /// Crée un nouveau restaurant.
+        /// </summary>
+        /// <param name="restaurantDTO">Données du restaurant à créer.</param>
+        /// <returns>Le restaurant créé.</returns>
+        /// <response code="201">Le restaurant a été créé avec succès.</response>
+        /// <response code="400">Mauvaise requête : l'ID de catégorie spécifié n'existe pas.</response>
+        /// <response code="401">Vous n'êtes pas autorisé à consulter la ressource.</response>
+        /// <response code="500">Échec de traitement de la requête par l'application.</response>
         [HttpPost]
         public async Task<ActionResult<Restaurant>> PostRestaurant([FromBody] RestaurantCreateDTO restaurantDTO)
         {
@@ -174,7 +232,15 @@ namespace RestaurantsApp.Controllers
 
 
 
-        // DELETE: api/Restaurants/5
+        /// <summary>
+        /// Supprime un restaurant par son ID.
+        /// </summary>
+        /// <param name="id">ID du restaurant à supprimer.</param>
+        /// <returns>Aucun contenu en cas de succès.</returns>
+        /// <response code="204">Le restaurant a été supprimé avec succès.</response>
+        /// <response code="401">Vous n'êtes pas autorisé à consulter la ressource.</response>
+        /// <response code="404">Le restaurant avec l'ID spécifié n'a pas été trouvé.</response>
+        /// <response code="500">Échec de traitement de la requête par l'application.</response>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRestaurant(int id)
         {

@@ -21,7 +21,16 @@ namespace RestaurantsApp.Controllers
             _context = context;
         }
 
-        // GET: api/Categories
+        /// <summary>
+        /// Récupère une liste de catégories de restaurants.
+        /// </summary>
+        /// <remarks>
+        /// Cette méthode permet de récupérer la liste complète des catégories de restaurants disponibles.
+        /// </remarks>
+        /// <returns>Une liste de catégories de restaurants.</returns>
+        /// <response code="200">La liste de catégories a été récupérée avec succès.</response>
+        /// <response code="401">Vous n'êtes pas autorisé à consulter la ressource.</response>
+        /// <response code="403">La ressource que vous avez tenté d'atteindre n'a pas été trouvée.</response>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
         {
@@ -32,7 +41,14 @@ namespace RestaurantsApp.Controllers
             return await _context.Categories.ToListAsync();
         }
 
-        // GET: api/Categories/5
+        /// <summary>
+        /// Récupère une catégorie de restaurant par son ID.
+        /// </summary>
+        /// <param name="id">ID de la catégorie à récupérer.</param>
+        /// <returns>La catégorie de restaurant correspondant à l'ID spécifié.</returns>
+        /// <response code="200">La catégorie a été récupérée avec succès.</response>
+        /// <response code="401">Vous n'êtes pas autorisé à consulter la ressource.</response>
+        /// <response code="403">La ressource que vous avez tenté d'atteindre n'a pas été trouvée.</response>
         [HttpGet("{id}")]
         public async Task<ActionResult<Category>> GetCategory(int id)
         {
@@ -50,8 +66,17 @@ namespace RestaurantsApp.Controllers
             return category;
         }
 
-        // PUT: api/Categories/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Met à jour une catégorie de restaurant par son ID.
+        /// </summary>
+        /// <param name="id">ID de la catégorie à mettre à jour.</param>
+        /// <param name="category">Données de la catégorie à mettre à jour.</param>
+        /// <returns>Aucun contenu en cas de succès.</returns>
+        /// <response code="204">La catégorie a été mise à jour avec succès.</response>
+        /// <response code="400">Mauvaise requête : l'ID de catégorie spécifié ne correspond pas à la catégorie fournie.</response>
+        /// <response code="401">Vous n'êtes pas autorisé à consulter la ressource.</response>
+        /// <response code="404">La catégorie avec l'ID spécifié n'a pas été trouvée.</response>
+        /// <response code="500">Échec de traitement de la requête par l'application.</response>
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCategory(int id, Category category)
         {
@@ -81,8 +106,15 @@ namespace RestaurantsApp.Controllers
             return NoContent();
         }
 
-        // POST: api/Categories
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Crée une nouvelle catégorie de restaurant.
+        /// </summary>
+        /// <param name="category">Données de la catégorie à créer.</param>
+        /// <returns>La catégorie de restaurant créée.</returns>
+        /// <response code="201">La catégorie a été créée avec succès.</response>
+        /// <response code="400">Mauvaise requête : la création de la catégorie a échoué.</response>
+        /// <response code="401">Vous n'êtes pas autorisé à consulter la ressource.</response>
+        /// <response code="500">Échec de traitement de la requête par l'application.</response>
         [HttpPost]
         public async Task<ActionResult<Category>> PostCategory(Category category)
         {
@@ -96,7 +128,15 @@ namespace RestaurantsApp.Controllers
             return CreatedAtAction("GetCategory", new { id = category.Id }, category);
         }
 
-        // DELETE: api/Categories/5
+        /// <summary>
+        /// Supprime une catégorie de restaurant par son ID.
+        /// </summary>
+        /// <param name="id">ID de la catégorie à supprimer.</param>
+        /// <returns>Aucun contenu en cas de succès.</returns>
+        /// <response code="204">La catégorie a été supprimée avec succès.</response>
+        /// <response code="401">Vous n'êtes pas autorisé à consulter la ressource.</response>
+        /// <response code="404">La catégorie avec l'ID spécifié n'a pas été trouvée.</response>
+        /// <response code="500">Échec de traitement de la requête par l'application.</response>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCategory(int id)
         {

@@ -10,6 +10,7 @@ using System.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -50,7 +51,13 @@ builder.Services.AddSwaggerGen(c =>
             Email = "email@email.com",
             Url = new Uri("https://google.com")
         }
+
+
     });
+
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    c.IncludeXmlComments(xmlPath);
 });
 
 // Load configuration from appsettings.json
